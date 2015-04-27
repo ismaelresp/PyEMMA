@@ -899,9 +899,9 @@ def uniform_time(data=None, k=100, stride=1):
 
 
 def cluster_uniform_time(data=None, k=100, stride=1, metric='euclidean'):
-    r"""Uniform time clustering
+    r"""Uniform time clustering.
 
-    If given data, performs a clustering that selects data points uniformly in time and then assigns the data
+    If data is given, performs a clustering that selects data points uniformly in time and then assigns the data
     using a Voronoi discretization. Returns a
     :class:`UniformTimeClustering <pyemma.coordinates.clustering.UniformTimeClustering>` object
     that can be used to extract the discretized data sequences, or to assign other data points to the same partition.
@@ -942,7 +942,7 @@ def regspace(data=None, dmin=-1, max_centers=1000, stride=1):
 
 
 def cluster_regspace(data=None, dmin=-1, max_centers=1000, stride=1, metric='euclidean'):
-    r"""Regular space clustering
+    r"""Regular space clustering.
 
     If given data, it performs a regular space clustering [1]_ and returns a
     :class:`RegularSpaceClustering <pyemma.coordinates.clustering.RegularSpaceClustering>` object that
