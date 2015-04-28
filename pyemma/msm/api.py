@@ -51,7 +51,7 @@ __all__ = ['its',
 
 
 def its(dtrajs, lags=None, nits=10, reversible=True, connected=True):
-    r"""Calculate implied timescales for a series of lag times.
+    r"""Calculates implied timescales for a set of lag times.
 
     Parameters
     ----------
@@ -73,10 +73,11 @@ def its(dtrajs, lags=None, nits=10, reversible=True, connected=True):
     Returns
     -------
     itsobj : :class:`ImpliedTimescales <pyemma.msm.ui.ImpliedTimescales>` object
+        Implied timescale object, which holds information on the implied time scales of the MSM.
 
     See also
     --------
-    ImpliedTimescales
+    pyemma.msm.ui.ImpliedTimescales
         The object returned by this function.
     pyemma.plots.plot_implied_timescales
         Plotting function for the :class:`ImpliedTimescales <pyemma.msm.ui.ImpliedTimescales>` object
@@ -84,8 +85,8 @@ def its(dtrajs, lags=None, nits=10, reversible=True, connected=True):
     References
     ----------
     .. [1] Swope, W. C. and J. W. Pitera and F. Suits
-        Describing protein folding kinetics by molecular dynamics simulations: 1. Theory.
-        J. Phys. Chem. B 108: 6571-6581 (2004)
+        *Describing protein folding kinetics by molecular dynamics simulations: 1. Theory.*
+        J. Phys. Chem. B **108**: 6571-6581 (2004)
 
     """
     itsobj = ImpliedTimescales(dtrajs, lags=lags, nits=nits, reversible=reversible, connected=connected)
@@ -93,9 +94,9 @@ def its(dtrajs, lags=None, nits=10, reversible=True, connected=True):
 
 
 def markov_model(P, dt='1 step'):
-    r"""Markov model with a given transition matrix
+    r"""Markov model with a given transition matrix.
 
-    Returns a :class:`MSM <pyemma.msm.ui.MSM>` that contains the transition matrix
+    Returns an :class:`MSM <pyemma.msm.ui.MSM>` that contains the transition matrix
     and allows to compute a large number of quantities related to Markov models.
 
     Parameters
@@ -116,11 +117,12 @@ def markov_model(P, dt='1 step'):
 
     Returns
     -------
-    A :class:`MSM <pyemma.msm.ui.MSM>` object containing a transition matrix and various other MSM-related quantities.
+    MSM : a :class:`MSM <pyemma.msm.ui.MSM>` object
+        contains a transition matrix and various other MSM-related quantities.
 
     See also
     --------
-    MSM : A MSM object
+    pyemma.msm.ui.MSM : An MSM object
 
     """
     return MSM(P, dt=dt)
@@ -128,9 +130,9 @@ def markov_model(P, dt='1 step'):
 
 def estimate_markov_model(dtrajs, lag, reversible=True, sparse=False, connectivity='largest', estimate=True,
                           dt='1 step', **kwargs):
-    r"""Estimates a Markov model from discrete trajectories
+    r"""Estimates a Markov model from discrete trajectories.
 
-    Returns a :class:`EstimatedMSM <pyemma.msm.ui.EstimatedMSM>` that contains the estimated transition matrix
+    Returns an :class:`EstimatedMSM <pyemma.msm.ui.EstimatedMSM>` object that contains the estimated transition matrix
     and allows to compute a large number of quantities related to Markov models.
 
     Parameters
@@ -139,9 +141,9 @@ def estimate_markov_model(dtrajs, lag, reversible=True, sparse=False, connectivi
         discrete trajectories, stored as integer ndarrays (arbitrary size)
         or a single ndarray for only one trajectory.
     lag : int
-        lagtime for the MSM estimation in multiples of trajectory steps
+        lagtime for the MSM estimation in multiples of trajectory steps.
     reversible : bool, optional, default = True
-        If true compute reversible MSM, else non-reversible MSM
+        If true compute reversible MSM, else non-reversible MSM.
     sparse : bool, optional, default = False
         If true compute count matrix, transition matrix and all derived quantities using sparse matrix algebra.
         In this case python sparse matrices will be returned by the corresponding functions instead of numpy
@@ -149,14 +151,17 @@ def estimate_markov_model(dtrajs, lag, reversible=True, sparse=False, connectivi
         to be much more efficient.
     connectivity : str, optional, default = 'largest'
         Connectivity mode. Three methods are intended (currently only 'largest' is implemented)
-        'largest' : The active set is the largest reversibly connected set. All estimation will be done on this
-            subset and all quantities (transition matrix, stationary distribution, etc) are only defined on this
-            subset and are correspondingly smaller than the full set of states
+
+        'largest' : The active set is the largest reversibly connected set. All estimation will be carried out on this
+        subset and all quantities (transition matrix, stationary distribution, etc) are only defined on this
+        subset and are correspondingly smaller than the full set of states
+
         'all' : The active set is the full set of states. Estimation will be conducted on each reversibly connected
-            set separately. That means the transition matrix will decompose into disconnected submatrices,
-            the stationary vector is only defined within subsets, etc. Currently not implemented.
+        set separately. That means the transition matrix will decompose into disconnected submatrices,
+        the stationary vector is only defined within subsets, etc. Currently not implemented.
+
         'none' : The active set is the full set of states. Estimation will be conducted on the full set of states
-            without ensuring connectivity. This only permits nonreversible estimation. Currently not implemented.
+        without ensuring connectivity. This only permits nonreversible estimation. Currently not implemented.
     estimate : bool, optional, default=True
         If true estimate the MSM when creating the MSM object.
     dt : str, optional, default='1 step'
@@ -174,29 +179,29 @@ def estimate_markov_model(dtrajs, lag, reversible=True, sparse=False, connectivi
     **kwargs: Optional algorithm-specific parameters. See below for special cases
     maxiter = 1000000 : int
         Optional parameter with reversible = True.
-        maximum number of iterations before the transition matrix estimation method exits
+        maximum number of iterations before the transition matrix estimation method exits.
     maxerr = 1e-8 : float
         Optional parameter with reversible = True.
         convergence tolerance for transition matrix estimation.
         This specifies the maximum change of the Euclidean norm of relative
         stationary probabilities (:math:`x_i = \sum_k x_{ik}`). The relative stationary probability changes
         :math:`e_i = (x_i^{(1)} - x_i^{(2)})/(x_i^{(1)} + x_i^{(2)})` are used in order to track changes in small
-        probabilities. The Euclidean norm of the change vector, :math:`|e_i|_2`, is compared to maxerr.
+        probabilities. The Euclidean norm of the change vector, :math:`|e_i|_2`, is compared to `maxerr`.
 
     Returns
     -------
-    An :class:`EstimatedMSM <pyemma.msm.ui.EstimatedMSM>` object containing a transition matrix and various other
-    MSM-related quantities.
+    EstimatedMSM : An :class:`EstimatedMSM <pyemma.msm.ui.EstimatedMSM>` object
+        It contains a transition matrix and various other MSM-related quantities.
 
     Notes
     -----
-    You can postpone the estimation of the MSM using compute=False and
+    It is possible to postpone the estimation of the MSM using `compute=False` and
     initiate the estimation procedure by manually calling the MSM.estimate()
     method.
 
     See also
     --------
-    EstimatedMSM : An MSM object that has been estimated from data
+    `EstimatedMSM() <pyemma.msm.ui.EstimatedMSM>` : An MSM object that has been estimated from data.
 
     """
     return EstimatedMSM(dtrajs, lag, reversible=reversible, sparse=sparse, connectivity=connectivity, estimate=estimate,
@@ -204,7 +209,7 @@ def estimate_markov_model(dtrajs, lag, reversible=True, sparse=False, connectivi
 
 
 def cktest(msmobj, K, nsets=2, sets=None, full_output=False):
-    r"""Chapman-Kolmogorov test for the given MSM
+    r"""Chapman-Kolmogorov test for the given MSM.
 
     Parameters
     ----------
@@ -233,9 +238,9 @@ def cktest(msmobj, K, nsets=2, sets=None, full_output=False):
     References
     ----------
     .. [1] Prinz, J H, H Wu, M Sarich, B Keller, M Senne, M Held, J D
-        Chodera, C Schuette and F Noe. 2011. Markov models of
-        molecular kinetics: Generation and validation. J Chem Phys
-        134: 174105
+        Chodera, C Schuette and F Noe. 2011. *Markov models of
+        molecular kinetics: Generation and validation*. J Chem Phys
+        **134**: 174105
     """
     P = msmobj.transition_matrix
     lcc = msmobj.largest_connected_set
@@ -246,11 +251,11 @@ def cktest(msmobj, K, nsets=2, sets=None, full_output=False):
 
 
 def tpt(msmobj, A, B):
-    r"""A->B reactive flux from transition path theory (TPT)
+    r"""A->B reactive flux from transition path theory (TPT).
 
-    The returned :class:`ReactiveFlux <pyemma.msm.flux.ReactiveFlux>` object can be used to extract various quantities
-    of the flux, as well as to compute A -> B transition pathways, their weights, and to coarse-grain the flux onto
-    sets of states.
+    The returned :class:`ReactiveFlux <pyemma.msm.flux.ReactiveFlux>` object can be used to extract various flux
+    quantities. furthermore it can be used to compute A -> B transition pathways, path weights, and can be used to
+    coarse-grain the flux onto sets of states.
 
     Parameters
     ----------
@@ -279,21 +284,21 @@ def tpt(msmobj, A, B):
     
     See also
     --------
-    ReactiveFlux
+    `ReactiveFlux() <pyemma.msm.flux.ReactiveFlux>`
         Reactive Flux object
     
     References
     ----------
     .. [1] W. E and E. Vanden-Eijnden.
-        Towards a theory of transition paths. 
-        J. Stat. Phys. 123: 503-523 (2006)
+        *Towards a theory of transition paths.*
+        J. Stat. Phys. **123**: 503-523 (2006)
     .. [2] P. Metzner, C. Schuette and E. Vanden-Eijnden.
-        Transition Path Theory for Markov Jump Processes. 
-        Multiscale Model Simul 7: 1192-1219 (2009)
+        *Transition Path Theory for Markov Jump Processes.*
+        Multiscale Model Simul **7**: 1192-1219 (2009)
     .. [3] F. Noe, Ch. Schuette, E. Vanden-Eijnden, L. Reich and
-        T. Weikl: Constructing the Full Ensemble of Folding Pathways
-        from Short Off-Equilibrium Simulations.
-        Proc. Natl. Acad. Sci. USA, 106, 19011-19016 (2009)
+        T. Weikl: *Constructing the Full Ensemble of Folding Pathways
+        from Short Off-Equilibrium Simulations.*
+        Proc. Natl. Acad. Sci. USA, **106**, 19011-19016 (2009)
         
     """
     T = msmobj.transition_matrix

@@ -82,7 +82,7 @@ class Transformer(object):
 
     @property
     def data_producer(self):
-        r"""where the transformer obtains its data."""
+        r"""Function the transformer obtains its data from."""
         return self._dataproducer
 
     @data_producer.setter
@@ -93,7 +93,7 @@ class Transformer(object):
 
     @property
     def chunksize(self):
-        """chunksize defines how much data is being processed at once."""
+        r"""Chunksize defines how much data is being processed at once."""
         return self._chunksize
 
     @chunksize.setter
@@ -103,7 +103,7 @@ class Transformer(object):
 
     @property
     def in_memory(self):
-        r"""are results stored in memory?"""
+        r"""Are results stored in memory?"""
         return self._in_memory
 
     @in_memory.setter
@@ -158,7 +158,7 @@ class Transformer(object):
 
         Returns
         -------
-        int : length of trajectory
+        length of trajectory : int
         """
         return self.data_producer.trajectory_length(itraj, stride=stride)
 
@@ -174,7 +174,7 @@ class Transformer(object):
 
         Returns
         -------
-        int : length of each trajectory
+        length of each trajectory : int
         """
         return self.data_producer.trajectory_lengths(stride=stride)
 
@@ -190,7 +190,7 @@ class Transformer(object):
 
         Returns
         -------
-        int : n_frames_total
+        n_frames_total : int
         """
         return self.data_producer.n_frames_total(stride=stride)
 
@@ -510,13 +510,13 @@ class Transformer(object):
         Returns
         -------
         output : ndarray(T, d) or list of ndarray(T_i, d)
-            the mapped data, where T is the number of time steps of the input data, or if stride > 1,
+            the mapped data, where T is the number of time steps of the input data, or if `stride` > 1,
             floor(T_in / stride). d is the output dimension of this transformer.
             If the input consists of a list of trajectories, Y will also be a corresponding list of trajectories
 
         Notes
         -----
-        This function may be RAM intensive if stride is too large or
+        This function may be RAM intensive if `stride` is too large or
         too many dimensions are selected.
 
         Example

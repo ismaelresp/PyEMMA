@@ -72,7 +72,10 @@ class PCA(Transformer):
         r"""
         Returns the number of output dimensions.
 
-        :return:
+        Returns
+        -------
+        dimension : int
+            number of ouput dimensions for the transformer
         """
         return self._output_dimension
 

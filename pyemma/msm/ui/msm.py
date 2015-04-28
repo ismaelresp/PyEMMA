@@ -46,7 +46,7 @@ __all__ = ['MSM', 'EstimatedMSM']
 
 
 class MSM(object):
-    r"""Markov model with a given transition matrix
+    r"""Markov model with a given transition matrix.
 
     Parameters
     ----------
@@ -62,7 +62,7 @@ class MSM(object):
         |  'ns',  'nanosecond*'
         |  'us',  'microsecond*'
         |  'ms',  'millisecond*'
-        |  's',   'second*'
+        |  's',   'second*'.
 
     """
 
@@ -110,22 +110,22 @@ class MSM(object):
 
     @property
     def is_reversible(self):
-        """Returns whether the MSM is reversible """
+        r"""Returns whether the MSM is reversible. """
         return self._reversible
 
     @property
     def is_sparse(self):
-        """Returns whether the MSM is sparse """
+        r"""Returns whether the MSM is sparse. """
         return self._sparse
 
     @property
     def timestep(self):
-        """Returns the physical time corresponding to one step of the transition matrix as string, e.g. '10 ps'"""
+        r"""Returns the physical time corresponding to one step of the transition matrix as string, e.g. '10 ps'."""
         return str(self._timeunit)
 
     @property
     def nstates(self):
-        """
+        r"""
         The active set of states on which all computations and estimations will be done
 
         """
@@ -134,9 +134,9 @@ class MSM(object):
 
     @property
     def transition_matrix(self):
-        """
+        r"""
         The transition matrix, estimated on the active set. For example, for connectivity='largest' it will be the
-        transition matrix amongst the largest set of reversibly connected states
+        transition matrix amongst the largest set of reversibly connected states.
 
         """
         self._assert_estimated()
@@ -148,10 +148,10 @@ class MSM(object):
 
     @property
     def stationary_distribution(self):
-        """The stationary distribution, estimated on the active set.
+        r"""The stationary distribution, estimated on the active set.
 
-        For example, for connectivity='largest' it will be the
-        transition matrix amongst the largest set of reversibly connected states
+        For example, in the case of connectivity='largest' it will use the largest connected component of a reversibly
+        estimated transition matrix and return the stationary distribution of the connected set of states.
 
         """
         self._assert_estimated()
@@ -164,12 +164,12 @@ class MSM(object):
             return self._mu
 
     def _do_eigendecomposition(self, k, ncv=None):
-        """Conducts the eigenvalue decomposition and stores k eigenvalues, left and right eigenvectors
+        r"""Conducts the eigenvalue decomposition and stores k eigenvalues, left and right eigenvectors.
 
         Parameters
         ----------
         k : int
-            The number of eigenvalues / eigenvectors to be kept
+            The number of eigenvalues / eigenvectors to be kept.
         ncv : int (optional)
             Relevant for eigenvalue decomposition of reversible transition matrices.
             ncv is the number of Lanczos vectors generated, `ncv` must be greater than k;
@@ -189,7 +189,7 @@ class MSM(object):
         self._eigenvalues = np.diag(self._D)
 
     def _ensure_eigendecomposition(self, k=None, ncv=None):
-        """Ensures that eigendecomposition has been performed with at least k eigenpairs
+        r"""Ensures that eigendecomposition has been performed with at least k eigenpairs.
 
         k : int
             number of eigenpairs needed. This setting is mandatory for sparse transition matrices
@@ -223,7 +223,7 @@ class MSM(object):
 
 
     def eigenvalues(self, k=None, ncv=None):
-        """Compute the transition matrix eigenvalues
+        r"""Compute the transition matrix eigenvalues.
 
         Parameters
         ----------
@@ -245,12 +245,13 @@ class MSM(object):
 
 
     def eigenvectors_left(self, k=None, ncv=None):
-        """Compute the left transition matrix eigenvectors
+        r"""Compute the left transition matrix eigenvectors.
 
         Parameters
         ----------
         k : int
-            number of timescales to be computed. By default identical to the number of eigenvalues computed minus 1
+            number of left eigenvectors to be computed. By default identical to the number of eigenvalues computed
+            minus 1.
         ncv : int (optional)
             Relevant for eigenvalue decomposition of reversible transition matrices.
             ncv is the number of Lanczos vectors generated, `ncv` must be greater than k;
@@ -259,7 +260,7 @@ class MSM(object):
         Returns
         -------
         L : ndarray(k,n)
-            left eigenvectors in a row matrix. l_ij is the j'th component of the i'th left eigenvector
+            left eigenvectors in a row matrix. l_ij is the j'th component of the i'th left eigenvector.
 
         """
         self._ensure_eigendecomposition(k=k, ncv=ncv)
@@ -267,12 +268,13 @@ class MSM(object):
 
 
     def eigenvectors_right(self, k=None, ncv=None):
-        """Compute the right transition matrix eigenvectors
+        r"""Compute the right transition matrix eigenvectors.
 
         Parameters
         ----------
         k : int
-            number of timescales to be computed. By default identical to the number of eigenvalues computed minus 1
+            number of right eigenvectors to be computed. By default identical to the number of eigenvalues computed
+            minus 1.
         ncv : int (optional)
             Relevant for eigenvalue decomposition of reversible transition matrices.
             ncv is the number of Lanczos vectors generated, `ncv` must be greater than k;
@@ -288,13 +290,13 @@ class MSM(object):
         return self._R[:, :k]
 
     def timescales(self, k=None, ncv=None):
-        """
-        The relaxation timescales corresponding to the eigenvalues
+        r"""
+        The relaxation timescales corresponding to the eigenvalues.
 
         Parameters
         ----------
         k : int
-            number of timescales to be computed. As a result, k+1 eigenvalues will be computed
+            number of timescales to be computed. As a result, k+1 eigenvalues will be computed.
         ncv : int (optional)
             Relevant for eigenvalue decomposition of reversible transition matrices.
             ncv is the number of Lanczos vectors generated, `ncv` must be greater than k;
@@ -320,8 +322,8 @@ class MSM(object):
             return ts[1:neig]  # exclude the stationary process
 
     def _assert_in_active(self, A):
-        """
-        Checks if set A is within the active set
+        r"""
+        Checks if set A is within the active set.
 
         Parameters
         ----------
@@ -331,7 +333,7 @@ class MSM(object):
         assert np.max(A) < self._nstates, 'Chosen set contains states that are not included in the active set.'
 
     def mfpt(self, A, B):
-        """Mean first passage times from set A to set B, in units of the input trajectory time step
+        r"""Mean first passage times from set A to set B, in units of the input trajectory time step.
 
         Parameters
         ----------
@@ -349,7 +351,7 @@ class MSM(object):
 
 
     def committor_forward(self, A, B):
-        """Forward committor (also known as p_fold or splitting probability) from set A to set B
+        r"""Forward committor (also known as p_fold or splitting probability) from set A to set B.
 
         Parameters
         ----------
@@ -366,7 +368,7 @@ class MSM(object):
         return _committor(self._T, A, B, forward=True)
 
     def committor_backward(self, A, B):
-        """Backward committor from set A to set B
+        r"""Backward committor from set A to set B.
 
         Parameters
         ----------
@@ -458,7 +460,7 @@ class MSM(object):
             By default (None), the maxtime will be set equal to the 3 times the slowest relaxation time of the MSM,
             because after this time the signal is constant.
         b : (M,) ndarray (optional)
-            Second observable, for cross-correlations
+            Second observable, for cross-correlations.
         k : int (optional)
             Number of eigenvalues and eigenvectors to use for computation. This option is only relevant for sparse
             matrices and long times for which an eigenvalue decomposition will be done instead of using the
@@ -466,14 +468,14 @@ class MSM(object):
         ncv : int (optional)
             Only relevant for sparse matrices and large lag times, where the relaxation will be computes using an
             eigenvalue decomposition. The number of Lanczos vectors generated, `ncv` must be greater than k;
-            it is recommended that ncv > 2*k
+            it is recommended that ncv > 2*k.
 
         Returns
         -------
         times : ndarray (N)
-            Time points (in units of the input trajectory time step) at which the correlation has been computed
+            Time points (in units of the input trajectory time step) at which the correlation has been computed.
         correlations : ndarray (N)
-            Correlation values at given times
+            Correlation values at given times.
 
         Examples
         --------
@@ -495,11 +497,11 @@ class MSM(object):
         References
         ----------
         .. [1] Noe, F., S. Doose, I. Daidone, M. Loellmann, J. D. Chodera, M. Sauer and J. C. Smith. 2011
-            Dynamical fingerprints for probing individual relaxation processes in biomolecular dynamics with simulations
-            and kinetic experiments. Proc. Natl. Acad. Sci. USA 108, 4822-4827.
+            *Dynamical fingerprints for probing individual relaxation processes in biomolecular dynamics with
+            simulations and kinetic experiments.* Proc. Natl. Acad. Sci. USA **108**, 4822-4827.
         .. [2] Lindner, B., Z. Yi, J.-H. Prinz, J. C. Smith and F. Noe. 2013.
-            Dynamic Neutron Scattering from Conformational Dynamics I: Theory and Markov models.
-            J. Chem. Phys. 139, 175101.
+            *Dynamic Neutron Scattering from Conformational Dynamics I: Theory and Markov models*
+            J. Chem. Phys. **139**, 175101.
 
         """
         # are we ready?
@@ -526,35 +528,36 @@ class MSM(object):
         return times, res
 
     def fingerprint_correlation(self, a, b=None, k=None, ncv=None):
-        r"""Dynamical fingerprint for equilibrium time-correlation experiment.
+        r"""Dynamical fingerprint for an equilibrium time-correlation experiment.
 
         Parameters
         ----------
         a : (M,) ndarray
             Observable, represented as vector on state space
         b : (M,) ndarray (optional)
-            Second observable, for cross-correlations
+            Second observable, for cross-correlations.
         k : int (optional)
             Number of eigenvalues and eigenvectors to use for computation. This option is only relevant for sparse
-            matrices and long times for which an eigenvalue decomposition will be done instead of using the matrix power
+            matrices and long times for which an eigenvalue decomposition will be done instead of using the matrix
+            power.
         ncv : int (optional)
             Only relevant for sparse matrices and large lag times, where the relaxation will be computes using an
             eigenvalue decomposition. The number of Lanczos vectors generated, `ncv` must be greater than k;
-            it is recommended that ncv > 2*k
+            it is recommended that ncv > 2*k.
 
         Returns
         -------
         timescales : (N,) ndarray
-            Time-scales (in units of the input trajectory time step) of the transition matrix
+            Time-scales (in units of the input trajectory time step) of the transition matrix.
         amplitudes : (N,) ndarray
-            Amplitudes for the correlation experiment
+            Amplitudes for the correlation experiment.
 
         References
         ----------
         .. [1] Noe, F, S Doose, I Daidone, M Loellmann, M Sauer, J D
-            Chodera and J Smith. 2010. Dynamical fingerprints for probing
+            Chodera and J Smith. 2010. *Dynamical fingerprints for probing
             individual relaxation processes in biomolecular dynamics with
-            simulations and kinetic experiments. PNAS 108 (12): 4822-4827.
+            simulations and kinetic experiments.* PNAS **108** (12): 4822-4827.
 
         """
         # are we ready?
@@ -744,9 +747,9 @@ class MSM(object):
 
         References
         ----------
-        .. [1] Roeblitz, S and M Weber. 2013. Fuzzy spectral clustering by
+        .. [1] Roeblitz, S and M Weber. 2013. *Fuzzy spectral clustering by
             PCCA+: application to Markov state models and data
-            classification. Advances in Data Analysis and Classification 7
+            classification.* Advances in Data Analysis and Classification **7**
             (2): 147-179
 
         """
@@ -1149,7 +1152,7 @@ class EstimatedMSM(MSM):
         The effective count matrix is obtained by dividing the sliding-window count matrix by the lag time. This
         can be shown to provide a likelihood that is the geometrical average over shifted subsamples of the trajectory,
         :math:`(s_1,\:s_{tau+1},\:...),\:(s_2,\:t_{tau+2},\:...),` etc. This geometrical average converges to the
-        correct likelihood in the statistical limit _[1].
+        correct likelihood in the statistical limit [1]_.
 
         [1] Trendelkamp-Schroer B, H Wu, F Paul and F Noe. 2015:
         Reversible Markov models of molecular kinetics: Estimation and uncertainty.

@@ -1008,9 +1008,9 @@ def assign_centers(data=None, centers=None, stride=1):
 
 def assign_to_centers(data=None, centers=None, stride=1, return_dtrajs=True,
                       metric='euclidean'):
-    r"""Assigns data to the nearest cluster centers
+    r"""Assigns data to the nearest cluster centers.
 
-    Creates a Voronoi partition with the given cluster centers. If given trajectories as data, this function
+    Creates a Voronoi partition with the given cluster centers. If trajectories are passed as data, the function
     will by default discretize the trajectories and return discrete trajectories of corresponding lengths.
     Otherwise, an assignment object will be returned that can be used to assign data later or can serve
     as a pipeline stage.
@@ -1041,7 +1041,7 @@ def assign_to_centers(data=None, centers=None, stride=1, return_dtrajs=True,
 
     Returns
     -------
-    assignment : list of integer arrays or an :class: `AssignCenters <pyemma.coordinates.clustering.AssignCenters>` object
+    assignment : list of integer arrays or a :class:`AssignCenters <pyemma.coordinates.clustering.AssignCenters>` object
         assigned data
 
     Examples
